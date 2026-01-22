@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Debug: Simple Board",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/solver.py",
+            "console": "integratedTerminal",
+            "args": ["--input=boards/sokoban_simple.txt"]
+        },
+        {
+            "name": "Debug: Mid Board",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/solver.py",
+            "console": "integratedTerminal",
+            "args": ["--input=boards/sokoban_mid.txt"]
+        },
+
+        {
+            "name": "Debug: Hard Board",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/solver.py",
+            "console": "integratedTerminal",
+            "args": ["--input=boards/sokoban_hard.txt"]
+        }
+    ]
+}
