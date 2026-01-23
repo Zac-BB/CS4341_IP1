@@ -25,21 +25,14 @@ class Sokoban(Problem):
             if pos == -1:
                 continue
             return i,pos
-    @staticmethod
-    def sgn(x: int) -> int:
-        if x == 0:
-            return 0
-        elif x < 0:
-            return -1
-        else:
-            return 1
+
     def _valid_action(self,state,action,pos) -> bool:
-        change_pos = tuple(map(sum,pos,action))
+        change_pos = (pos[0] + action[0],pos[1] + action[1])
         char_at_pos = state[change_pos[0]][change_pos[1]]
         if char_at_pos == "%":
             return False
-        elif change_pos.lower() == "b":
-            return self._valid_action(self,state,tuple(map(lambda x: x + 1*Sokoban.sgn(x),action)),pos)
+        elif char_at_pos.lower() == "b":
+            return self._valid_action(state,action,change_pos)
         else:
             return True
         
@@ -58,11 +51,26 @@ class Sokoban(Problem):
 
     def result(self, state, action):
         """Returns the resulting state after applying the action."""
-        raise NotImplementedError
+        player_pos = self._get_player_pos(state)
+        assert action in set(self._valid_action(state,action,player_pos))
+        def move(state,position,action,fill):
+
+            change_pos = (position[0] + action[0],position[1] + action[1])
+            char_at_pos = state[change_pos[0]][change_pos[1]]
+            if char_at_pos == 'B' and fill == "b":
+                fill = 
+            state[char_at_pos[0]][char_at_pos[1]] = fill
+            if char_at_pos
+
+
+        state[player_pos[0]][player_pos[1]] = " "      
+        state = move(state,player_pos,action,"P")
+        
+
+        return state
 
     def is_goal(self, state):
         """Checks if all boxes are on goal positions."""
-        assert isinstance(state,str), "type is not a str"
         for line in state:
             if "." in line:
                 return False
