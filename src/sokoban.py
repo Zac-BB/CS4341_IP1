@@ -16,23 +16,33 @@ class Sokoban(Problem):
         Initializes the Sokoban problem.
         :param board: List of strings, each string represent a row of the game board
         """
+        board = self.pre_process_board(board)
         super().__init__(board)
 
+    def pre_process_board(self,board):
+        new_board = [None]*len(board)
+        for i,line in enumerate(board):
+            line = line.replace("\n","")
+            new_board[i] = list(line)
+        i,j = self._get_player_pos(new_board)
+        new_board[i][j] = "p"
+        return new_board
     def _get_player_pos(_,state: List[str]) -> Tuple:
         """gets the player position """
         for i, line in enumerate(state):
-            pos = line.find("P")
-            if pos == -1:
-                continue
-            return i,pos
+            for j in range(len(line)):
+                char = line[j]
+                if char in "pP":
+                    return i,j
+        return None,None
 
-    def _valid_action(self,state,action,pos) -> bool:
+    def _valid_action(self,state,action,pos,depth = 0) -> bool:
         change_pos = (pos[0] + action[0],pos[1] + action[1])
         char_at_pos = state[change_pos[0]][change_pos[1]]
         if char_at_pos == "%":
             return False
-        elif char_at_pos.lower() == "b":
-            return self._valid_action(state,action,change_pos)
+        elif char_at_pos.lower() == "b" and depth == 0:
+            return self._valid_action(state,action,change_pos,depth+1)
         else:
             return True
         
@@ -52,19 +62,24 @@ class Sokoban(Problem):
     def result(self, state, action):
         """Returns the resulting state after applying the action."""
         player_pos = self._get_player_pos(state)
-        assert action in set(self._valid_action(state,action,player_pos))
-        def move(state,position,action,fill):
-
+        assert self._valid_action(state,action,player_pos)
+        def move(state,position,action,fill,layer = 0):
+            
             change_pos = (position[0] + action[0],position[1] + action[1])
             char_at_pos = state[change_pos[0]][change_pos[1]]
-            if char_at_pos == 'B' and fill == "b":
-                fill = 
-            state[char_at_pos[0]][char_at_pos[1]] = fill
-            if char_at_pos
+            is_button = char_at_pos == "."
+            on_button = char_at_pos.isupper() 
+            fill = fill.upper() if (char_at_pos.isupper() or char_at_pos == ".") else fill.lower()
+            state[change_pos[0]][change_pos[1]] = fill
+            if char_at_pos in "Bb":
+                state = move(state,change_pos,action,char_at_pos,layer+1)
+            return state
 
-
-        state[player_pos[0]][player_pos[1]] = " "      
-        state = move(state,player_pos,action,"P")
+        put = " "
+        if state[player_pos[0]][player_pos[1]].isupper():
+            put = "."
+        state[player_pos[0]][player_pos[1]] = put
+        state = move(state,player_pos,action,"p")
         
 
         return state
@@ -82,5 +97,7 @@ class Sokoban(Problem):
         given state."""
         score = 0
         for line in state:
-            score+= line.count(".")
+            for char in line:
+                if char == ".":
+                    score+= 1
         return score

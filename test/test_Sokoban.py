@@ -1,6 +1,8 @@
 import pytest
 from sokoban import Sokoban
 from utils import file_to_board
+import copy
+
 
 class TestSokoban:
     
@@ -15,6 +17,8 @@ class TestSokoban:
             "sokoban_solved": file_to_board("boards/sokoban_solved.txt"),
         }
         model = Sokoban(boards[list(boards.keys())[0]])
+        for name,board in boards.items():
+            boards[name] = model.pre_process_board(board)
         return model,boards
 
     def test_get_player_pos(self,setup_teardown):
@@ -65,8 +69,154 @@ class TestSokoban:
             assert set(moves) == set(solution), f"returned moves: {moves}, true moves {solution}"
 
 
-    def test_result(self):
-        pass
+    # def test_result(self,setup_teardown):
+    #     model, boards = setup_teardown
+    #     solutions = {
+    #         "sokoban_hard": {(0,-1):[['%', '%', '%', '%', '%', '%', '%', '%'], 
+    #                                   ['%', '%', '%', ' ', ' ', ' ', '%', '%'], 
+    #                                   ['%', 'P', ' ', 'b', ' ', ' ', '%', '%'], 
+    #                                   ['%', '%', '%', ' ', 'b', '.', '%', '%'], 
+    #                                   ['%', '.', '%', '%', 'b', ' ', '%', '%'], 
+    #                                   ['%', ' ', '%', ' ', '.', ' ', '%', '%'], 
+    #                                   ['%', 'b', ' ', 'B', 'b', 'b', '.', '%'], 
+    #                                   ['%', ' ', ' ', ' ', '.', ' ', ' ', '%'], 
+    #                                   ['%', '%', '%', '%', '%', '%', '%', '%']],
+
+    #                          (0,1):[  ['%', '%', '%', '%', '%', '%', '%', '%'], 
+    #                                   ['%', '%', '%', ' ', ' ', ' ', '%', '%'], 
+    #                                   ['%', '.', ' ', 'p', 'b', ' ', '%', '%'], 
+    #                                   ['%', '%', '%', ' ', 'b', '.', '%', '%'], 
+    #                                   ['%', '.', '%', '%', 'b', ' ', '%', '%'], 
+    #                                   ['%', ' ', '%', ' ', '.', ' ', '%', '%'], 
+    #                                   ['%', 'b', ' ', 'B', 'b', 'b', '.', '%'], 
+    #                                   ['%', ' ', ' ', ' ', '.', ' ', ' ', '%'], 
+    #                                   ['%', '%', '%', '%', '%', '%', '%', '%']]},
+    #         # "sokoban_mid": {},
+    #         # "sokoban_simple": {},
+    #         # "sokoban_trip_push": {}, 
+    #         # "sokoban_solved": {},
+    #     }
+    #     similar_boards = (set(solutions.keys()).intersection(set(boards.keys())))
+
+    #     assert len(similar_boards) > 0, "there are no similar board keys"
+    #     for board_name in similar_boards:
+    #         board = boards[board_name]
+    #         actions = model.actions(board)
+    #         for action in actions:
+    #             result = model.result(board,action)
+    #             solution = solutions[board_name][action]
+                
+    #             assert result == solution, "solutions are not similar"
+
+    def test_result(self, setup_teardown):
+        model, boards = setup_teardown
+        def board_to_string(board):
+            return "\n".join("".join(row) for row in board)
+
+        solutions = {
+            "sokoban_hard": {
+                (0, -1): [
+                    ['%', '%', '%', '%', '%', '%', '%', '%'],
+                    ['%', '%', '%', ' ', ' ', ' ', '%', '%'],
+                    ['%', 'P', ' ', 'b', ' ', ' ', '%', '%'],
+                    ['%', '%', '%', ' ', 'b', '.', '%', '%'],
+                    ['%', '.', '%', '%', 'b', ' ', '%', '%'],
+                    ['%', ' ', '%', ' ', '.', ' ', '%', '%'],
+                    ['%', 'b', ' ', 'B', 'b', 'b', '.', '%'],
+                    ['%', ' ', ' ', ' ', '.', ' ', ' ', '%'],
+                    ['%', '%', '%', '%', '%', '%', '%', '%'],
+                ],
+                (0, 1): [
+                    ['%', '%', '%', '%', '%', '%', '%', '%'],
+                    ['%', '%', '%', ' ', ' ', ' ', '%', '%'],
+                    ['%', '.', ' ', 'p', 'b', ' ', '%', '%'],
+                    ['%', '%', '%', ' ', 'b', '.', '%', '%'],
+                    ['%', '.', '%', '%', 'b', ' ', '%', '%'],
+                    ['%', ' ', '%', ' ', '.', ' ', '%', '%'],
+                    ['%', 'b', ' ', 'B', 'b', 'b', '.', '%'],
+                    ['%', ' ', ' ', ' ', '.', ' ', ' ', '%'],
+                    ['%', '%', '%', '%', '%', '%', '%', '%'],
+                ],
+            },
+            "sokoban_mid": {
+                (0,1):[['%', '%', '%', '%', '%', '%', '%'], 
+                       ['%', '%', '%', ' ', 'p', '.', '%'], 
+                       ['%', ' ', 'b', ' ', '%', '.', '%'], 
+                       ['%', ' ', ' ', 'b', 'b', ' ', '%'], 
+                       ['%', '.', ' ', ' ', '%', ' ', '%'], 
+                       ['%', ' ', ' ', ' ', 'b', '.', '%'], 
+                       ['%', '%', '%', '%', '%', '%', '%']],
+
+                (1,0):[['%', '%', '%', '%', '%', '%', '%'], 
+                       ['%', '%', '%', ' ', ' ', '.', '%'], 
+                       ['%', ' ', 'b', 'p', '%', '.', '%'], 
+                       ['%', ' ', ' ', 'b', 'b', ' ', '%'], 
+                       ['%', '.', ' ', ' ', '%', ' ', '%'], 
+                       ['%', ' ', ' ', ' ', 'b', '.', '%'], 
+                       ['%', '%', '%', '%', '%', '%', '%']]},
+            "sokoban_simple": {
+                (-1,0): [['%', '%', '%', '%', '%', '%'], 
+                         ['%', ' ', ' ', ' ', ' ', '%'], 
+                         ['%', 'b', '%', ' ', ' ', '%'], 
+                         ['%', 'P', 'b', ' ', '.', '%'], 
+                         ['%', ' ', '%', '%', '%', '%'], 
+                         ['%', ' ', '%', '%', '%', '%'], 
+                         ['%', '%', '%', '%', '%', '%']],
+                (1,0): [['%', '%', '%', '%', '%', '%'], 
+                         ['%', ' ', ' ', ' ', ' ', '%'], 
+                         ['%', ' ', '%', ' ', ' ', '%'], 
+                         ['%', 'B', 'b', ' ', '.', '%'], 
+                         ['%', ' ', '%', '%', '%', '%'], 
+                         ['%', 'p', '%', '%', '%', '%'], 
+                         ['%', '%', '%', '%', '%', '%']],
+                },
+            "sokoban_trip_push": {
+                (0,1): [['%', '%', '%', '%', '%', '%'], 
+                        ['%', 'b', ' ', ' ', '%', '%'], 
+                        ['%', ' ', 'p', 'B', 'B', '%'], 
+                        ['%', 'b', ' ', ' ', '%', '%'], 
+                        ['%', ' ', ' ', ' ', ' ', '%'], 
+                        ['%', '%', '%', '%', '%', '%']],
+                (1,0):[['%', '%', '%', '%', '%', '%'], 
+                        ['%', 'b', ' ', ' ', '%', '%'], 
+                        ['%', ' ', 'b', 'B', '.', '%'], 
+                        ['%', 'p', ' ', ' ', '%', '%'], 
+                        ['%', 'b', ' ', ' ', ' ', '%'], 
+                        ['%', '%', '%', '%', '%', '%']],
+            }
+        }
+
+        similar_boards = set(solutions) & set(boards)
+        assert similar_boards, "there are no similar board keys"
+
+        with open("test_results.txt", "w") as f:
+            for board_name in similar_boards:
+                board = copy.deepcopy(boards[board_name])
+                actions = model.actions(board)
+                print(board)
+                for action in actions:
+                    board = copy.deepcopy(boards[board_name])
+                    
+                    # if action == (0,1):
+                    #     continue
+                    result = model.result(board, action)
+                    solution = solutions[board_name][action]
+                    if result != solution:
+                        f.write(f"\n=== Board: {board_name} | Action: {action} ===\n")
+                        f.write("\nBoard:\n")
+                        f.write(board_to_string(board))
+                        f.write("\nExpected:\n")
+                        f.write(board_to_string(solution))
+                        f.write("\n\nActual:\n")
+                        f.write(board_to_string(result))
+                        f.write("\n" + "=" * 40 + "\n")
+
+                    assert result == solution, (
+                        f"Mismatch for board {board_name}, action {action}. "
+                        f"See test_results.txt for details."
+                    )
+
+
     
     def test_is_goal(self,setup_teardown):
         model, boards = setup_teardown
