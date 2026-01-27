@@ -44,10 +44,10 @@ class TestSokoban:
         state = boards["sokoban_trip_push"]
         player_pos = model._get_player_pos(state)
         possible_actions = [(-1,0),(0,1),(1,0),(0,-1)]
-        solutions = [False,True,True,False]
+        solutions = [False,False,True,False]
         for i,delta in enumerate(possible_actions):
             validity = model._valid_action(state,delta,player_pos)
-            assert validity is solutions[i], f"validity: {validity}, solution: {solutions[i]}"
+            assert validity is solutions[i], f"i: {i}, delta: {delta}, validity: {validity}, solution: {solutions[i]}"
                 
         
 
@@ -57,7 +57,7 @@ class TestSokoban:
             "sokoban_hard": [(0,-1),(0,1)],
             "sokoban_mid": [(0,1),(1,0)],
             "sokoban_simple": [(-1,0),(1,0)],
-            "sokoban_trip_push": [(0,1),(1,0)], 
+            "sokoban_trip_push": [(1,0)], 
         }
         similar_boards = (set(solutions.keys()).intersection(set(boards.keys())))
 

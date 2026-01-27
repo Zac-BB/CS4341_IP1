@@ -35,16 +35,18 @@ class Sokoban(Problem):
                 if char in "pP":
                     return i,j
         return None,None
-
-    def _valid_action(self,state,action,pos,depth = 0) -> bool:
+    
+    def _valid_action(self,state,action,pos) -> bool:
         change_pos = (pos[0] + action[0],pos[1] + action[1])
         char_at_pos = state[change_pos[0]][change_pos[1]]
-        if char_at_pos == "%":
-            return False
-        elif char_at_pos.lower() == "b" and depth == 0:
-            return self._valid_action(state,action,change_pos,depth+1)
-        else:
+        if char_at_pos.lower() == "b":
+            change_pos = (change_pos[0] + action[0],change_pos[1] + action[1])
+            char_at_pos = state[change_pos[0]][change_pos[1]]
+        if char_at_pos in " .":
             return True
+        else:
+            return False
+
         
 
     def actions(self, state: List[str]) -> Set[tuple]:
