@@ -12,7 +12,18 @@ def astar_search(problem, h=None):
     #    |_|\___/ \__,_|_|     \____\___/ \__,_|\___|  |_| |_|\___|_|  \___|
 
     h = memoize(h or problem.h)
-    # Be sure to read about hints in the IP 1 description.
+    queue = PriorityQueue()
+    state = tuple(tuple(row) for row in problem.initial)
+    queue.put((0+h(state),state,0,[]))
+    
+    while len(queue):
+        _,state,g,path = queue.pop()
+        if problem.is_goal(state):
+            return path
+        available_actions = problem.actions(state)
+        for action in available_actions:
+            resultant_state
+        print(state)
 
 
 

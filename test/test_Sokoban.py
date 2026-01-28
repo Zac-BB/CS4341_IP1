@@ -201,6 +201,7 @@ class TestSokoban:
                     #     continue
                     result = model.result(board, action)
                     solution = solutions[board_name][action]
+                    solution = tuple(tuple(row) for row in solution)
                     if result != solution:
                         f.write(f"\n=== Board: {board_name} | Action: {action} ===\n")
                         f.write("\nBoard:\n")

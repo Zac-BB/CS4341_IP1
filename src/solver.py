@@ -37,7 +37,7 @@ def main(input_file):
     # board is a list of strings containing rows in the input file, you need to parse it into your state representation.
     problem = Sokoban(board)
 
-    actions = problem.actions(board)
+    
 
     start_time = time.time()
     result = astar_search(problem)

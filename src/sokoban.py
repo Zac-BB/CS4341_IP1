@@ -26,6 +26,7 @@ class Sokoban(Problem):
             new_board[i] = list(line)
         i,j = self._get_player_pos(new_board)
         new_board[i][j] = "p"
+        new_board = tuple(tuple(row) for row in new_board)
         return new_board
     def _get_player_pos(_,state: List[str]) -> Tuple:
         """gets the player position """
@@ -63,6 +64,7 @@ class Sokoban(Problem):
 
     def result(self, state, action):
         """Returns the resulting state after applying the action."""
+        state = list(list(row) for row in state)
         player_pos = self._get_player_pos(state)
         assert self._valid_action(state,action,player_pos)
         def move(state,position,action,fill,layer = 0):
@@ -83,7 +85,7 @@ class Sokoban(Problem):
         state[player_pos[0]][player_pos[1]] = put
         state = move(state,player_pos,action,"p")
         
-
+        state = tuple(tuple(row) for row in state)
         return state
 
     def is_goal(self, state):
@@ -97,6 +99,13 @@ class Sokoban(Problem):
         """Heuristic function for the problem. This should return a
         non-negative estimate of the cost to reach the goal from the
         given state."""
+
+        """
+        Ideas: 
+        -dist to the goal
+        -if there is a block that is on the wall that cant be recovered 
+        -make sure that the blocks dont overlap on dist to goal
+        """
         score = 0
         for line in state:
             for char in line:
