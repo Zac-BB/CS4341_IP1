@@ -6,6 +6,14 @@
     "configurations": [
         
         {
+            "name": "Debug: one move Board",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/solver.py",
+            "console": "integratedTerminal",
+            "args": ["--input=boards/sokoban_one_step.txt"]
+        },
+        {
             "name": "Debug: Simple Board",
             "type": "debugpy",
             "request": "launch",

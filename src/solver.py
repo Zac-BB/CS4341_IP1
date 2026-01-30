@@ -49,6 +49,15 @@ def main(input_file):
     else:
         # Depending on your Sokoban formulation, you may need to convert your solution format to fulfill the output requirement.
         soln = result.solution()
+        move_to_str = {
+            (-1, 0): "U",
+            ( 0, 1): "R",
+            ( 1, 0): "D",
+            ( 0,-1): "L",
+        }
+        soln = list(map(lambda x: move_to_str[x],soln))
+        soln = "".join(soln)
+        
         print("Solution found with {} moves.".format(len(soln)))
     print("".join(soln))
     with open("solution.txt", "w") as f:

@@ -1,4 +1,5 @@
 from utils import memoize, PriorityQueue
+import copy
 
 def astar_search(problem, h=None):
     """A* search is best-first graph search with f(n) = g(n) + h(n).
@@ -13,17 +14,32 @@ def astar_search(problem, h=None):
 
     h = memoize(h or problem.h)
     queue = PriorityQueue()
+    root_node = Node(problem.initial)
     state = tuple(tuple(row) for row in problem.initial)
-    queue.put((0+h(state),state,0,[]))
-    
+    queue.put((0+h(state),root_node))
+    visited = set()
     while len(queue):
-        _,state,g,path = queue.pop()
-        if problem.is_goal(state):
-            return path
-        available_actions = problem.actions(state)
-        for action in available_actions:
-            resultant_state
-        print(state)
+        _,node = queue.pop()
+
+        if problem.is_goal(node.state):
+            return node
+        children = node.expand(problem)
+        for child in children:
+            state = tuple(tuple(row) for row in child.state)
+            f = child.path_cost + h(state)
+
+            if child in visited:
+                continue
+
+            if child in queue:
+                if f < queue[child]:
+                    queue.update_elem(child, (f, child))
+            else:
+                queue.put((f, child))
+
+
+
+
 
 
 
