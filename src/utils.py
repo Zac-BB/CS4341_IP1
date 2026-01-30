@@ -190,3 +190,18 @@ def file_to_board(input_file: str) -> List[str]:
                 board.append(l)
     return board
             
+
+
+def display_solution(problem,sol):
+    state = problem.initial
+    def board_to_string(board):
+            return "\n".join("".join(row) for row in board)
+    with open("test_results.txt", "w") as f:
+        f.write(f"\n=== move number: start | Action: (0,0) ===\n")
+        f.write(board_to_string(state))
+        f.write("\n" + "=" * 40 + "\n")
+        for i,action in enumerate(sol):
+            state = problem.result(state,action)
+            f.write(f"\n=== move number: {i} | Action: {action} ===\n")
+            f.write(board_to_string(state))
+            f.write("\n" + "=" * 40 + "\n")

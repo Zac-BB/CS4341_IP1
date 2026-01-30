@@ -56,6 +56,28 @@ def ucs_search(problem):
     #    | | (_) | |_| | |    | |__| (_) | (_| |  __/  |  _  |  __/ | |  __/
     #    |_|\___/ \__,_|_|     \____\___/ \__,_|\___|  |_| |_|\___|_|  \___|
 
+    queue = PriorityQueue()
+    root_node = Node(problem.initial)
+    queue.put((0,root_node))
+    visited = set()
+    while len(queue):
+        _,node = queue.pop()
+
+        if problem.is_goal(node.state):
+            return node
+        children = node.expand(problem)
+        for child in children:
+            # state = tuple(tuple(row) for row in child.state)
+            f = child.path_cost
+
+            if child in visited:
+                continue
+
+            if child in queue:
+                if f < queue[child]:
+                    queue.update_elem(child, (f, child))
+            else:
+                queue.put((f, child))
 
 
     return None

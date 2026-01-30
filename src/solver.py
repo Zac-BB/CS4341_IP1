@@ -1,7 +1,8 @@
 import time
 import click
 from sokoban import Sokoban
-from search import astar_search
+from search import astar_search, ucs_search
+from utils import display_solution
 
 # THIS FILE IS FOR SOLVING SOKOBAN PUZZLES
 #   _____                            _              _
@@ -27,7 +28,13 @@ from search import astar_search
     type=click.Path(exists=True),
     help="Path to the input file containing the Sokoban level.",
 )
-def main(input_file):
+@click.option(
+    "--output",
+    "output_file",
+    required=True,
+    help="Path to the output file to write the solution.",
+)
+def main(input_file,output_file):
     board = []
     with open(input_file, "r") as f:
         for l in f:
@@ -40,7 +47,8 @@ def main(input_file):
     
 
     start_time = time.time()
-    result = astar_search(problem)
+    # result = astar_search(problem)
+    result = ucs_search(problem)
     print("Search completed in {:.2f} seconds.".format(time.time() - start_time))
 
     if not result:
@@ -49,6 +57,7 @@ def main(input_file):
     else:
         # Depending on your Sokoban formulation, you may need to convert your solution format to fulfill the output requirement.
         soln = result.solution()
+        display_solution(problem,soln)
         move_to_str = {
             (-1, 0): "U",
             ( 0, 1): "R",
@@ -60,7 +69,7 @@ def main(input_file):
         
         print("Solution found with {} moves.".format(len(soln)))
     print("".join(soln))
-    with open("solution.txt", "w") as f:
+    with open(output_file, "w") as f:
         f.write("".join(soln))
 
 

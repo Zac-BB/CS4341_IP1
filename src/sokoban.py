@@ -91,7 +91,7 @@ class Sokoban(Problem):
     def is_goal(self, state):
         """Checks if all boxes are on goal positions."""
         for line in state:
-            if "." in line:
+            if "b" in line:
                 return False
         return True
     
@@ -107,8 +107,40 @@ class Sokoban(Problem):
         -make sure that the blocks dont overlap on dist to goal
         """
         score = 0
-        for line in state:
-            for char in line:
-                if char == ".":
-                    score+= 1
+        def neighbors_of_4(pos):
+            deltas = [(-1,0),(0,1),(1,0),(1,0)]
+            valid = []
+            for delta in deltas:
+                new_pos = (pos[0]+delta[0],pos[1]+delta[1])
+                if state[new_pos[0]][new_pos[1]] in " .":
+                    valid.append(new_pos)
+            return valid
+
+        
+
+        def bsf(start):
+            from collections import deque
+            queue = deque()
+            queue.append((start,0))
+            visited = set()
+
+            while queue:
+                pos,score = queue.popleft()
+                if state[pos[0]][pos[1]] == "." or state[pos[0]][pos[1]].isupper():
+                    return score
+                children = neighbors_of_4(pos)
+                for child in children:
+                    if child not in visited:
+                        queue.append((child,score+1))
+                        visited.add(child)
+            
+
+            
+            for i,line in enumerate(state):
+                for j, char in enumerate(line):
+                    if char == "b":
+                        score+= bsf((i,j))
+                
+
+
         return score
