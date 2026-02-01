@@ -36,7 +36,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/src/solver.py",
             "console": "integratedTerminal",
-            "args": ["--input=boards/sokoban_hard.txt"]
+            "args": ["--input=boards/sokoban_extreme.txt","--output=solution.txt"]
         }
     ]
 }

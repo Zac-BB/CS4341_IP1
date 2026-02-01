@@ -47,8 +47,8 @@ def main(input_file,output_file):
     
 
     start_time = time.time()
-    # result = astar_search(problem)
-    result = ucs_search(problem)
+    result = astar_search(problem)
+    # result = ucs_search(problem)
     print("Search completed in {:.2f} seconds.".format(time.time() - start_time))
 
     if not result:

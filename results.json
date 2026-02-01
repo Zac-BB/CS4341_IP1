@@ -1,0 +1,48 @@
+{
+    "A Star": {
+        "boards/sokoban_simple.txt": {
+            "nodes_expanded": 21,
+            "frontier": 3,
+            "time": 0.0015871524810791016,
+            "output": "URRUULLD",
+            "output length": 8
+        },
+        "boards/sokoban_mid.txt": {
+            "nodes_expanded": 17248,
+            "frontier": 1170,
+            "time": 1.9141886234283447,
+            "output": "DDUURRDDLLRRDDLLULLUURDRDDRRUULLRRUULLDLLDDDRRUULRRRUULLDLDRDDLURUUURRDDDDLLUURLDDRRUUUDLLDLLDRRUUULDRDDLLURURRRDDLLULURRLDDRRUULLDLLDRRRLLUUULD",
+            "output length": 144
+        },
+        "boards/sokoban_hard.txt": {
+            "nodes_expanded": 37581,
+            "frontier": 12835,
+            "time": 6.883825063705444,
+            "output": "RURRDDDDLDRUUUULLLRDRDRDDLLDLLURLU",
+            "output length": 34
+        }
+    },
+    "Uniform Cost Search": {
+        "boards/sokoban_simple.txt": {
+            "nodes_expanded": 40,
+            "frontier": 1,
+            "time": 0.0012521743774414062,
+            "output": "URRUULLD",
+            "output length": 8
+        },
+        "boards/sokoban_mid.txt": {
+            "nodes_expanded": 44549,
+            "frontier": 9,
+            "time": 2.413621425628662,
+            "output": "DDUURRDDLLRRDDLLULLUURDRDDRRUULLRRUULLDLLDDDRRUULRRRUULLDLDRDDLURUUURRDDDDLLUURLDDRRUULLDLLDRRUUULDRDDLLURURRRUDDDLLULURRLDDRRUULLLDLDRRRLUUULLD",
+            "output length": 144
+        },
+        "boards/sokoban_hard.txt": {
+            "nodes_expanded": 551922,
+            "frontier": 112185,
+            "time": 55.59783172607422,
+            "output": "RURRDDDDLDRUUUULLLRDRDRDDLLDLLUUDR",
+            "output length": 34
+        }
+    }
+}

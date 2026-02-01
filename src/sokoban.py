@@ -5,6 +5,8 @@ from typing import List, Set, Tuple
 #   \ V / _ \| | | | '__| | |   / _ \ / _` |/ _ \  | |_| |/ _ \ '__/ _ \
 #    | | (_) | |_| | |    | |__| (_) | (_| |  __/  |  _  |  __/ | |  __/
 #    |_|\___/ \__,_|_|     \____\___/ \__,_|\___|  |_| |_|\___|_|  \___|
+
+
 class Sokoban(Problem):
     """
     A Sokoban problem instance for search algorithms.
@@ -16,6 +18,7 @@ class Sokoban(Problem):
         Initializes the Sokoban problem.
         :param board: List of strings, each string represent a row of the game board
         """
+        self.bsf_calls = 0
         board = self.pre_process_board(board)
         super().__init__(board)
 
@@ -106,17 +109,32 @@ class Sokoban(Problem):
         -if there is a block that is on the wall that cant be recovered 
         -make sure that the blocks dont overlap on dist to goal
         """
-        score = 0
+        
         def neighbors_of_4(pos):
-            deltas = [(-1,0),(0,1),(1,0),(1,0)]
+            deltas = [(-1,0),(0,1),(1,0),(0,-1)]
             valid = []
             for delta in deltas:
                 new_pos = (pos[0]+delta[0],pos[1]+delta[1])
-                if state[new_pos[0]][new_pos[1]] in " .":
+                if state[new_pos[0]][new_pos[1]] in " .BbpP":
                     valid.append(new_pos)
             return valid
-
-        
+        def add_vecs(a,b):
+            return a[0]+b[0],a[1]+b[1]
+        def cooked():
+            for i,line in enumerate(state):
+                for j, char in enumerate(line):
+                    if char == "b":
+                        deltas = [(-1,0),(0,1),(1,0),(0,-1)]
+                        sum = [0,0]
+                        accepted = []
+                        for delta in deltas:
+                            result = add_vecs([i,j],delta)
+                            if state[result[0]][result[1]] != "%":
+                                accepted.append(delta)
+                                sum = add_vecs(sum,delta)
+                        if abs(sum[0]) == 1 and abs(sum[1]) == 1:
+                            return float('inf')
+            return 0
 
         def bsf(start):
             from collections import deque
@@ -126,21 +144,28 @@ class Sokoban(Problem):
 
             while queue:
                 pos,score = queue.popleft()
-                if state[pos[0]][pos[1]] == "." or state[pos[0]][pos[1]].isupper():
+                char = state[pos[0]][pos[1]]
+                is_dot = state[pos[0]][pos[1]] == "."
+                is_on_dot = state[pos[0]][pos[1]].isupper()
+                if is_dot or is_on_dot:
                     return score
                 children = neighbors_of_4(pos)
+
                 for child in children:
                     if child not in visited:
                         queue.append((child,score+1))
                         visited.add(child)
             
 
-            
-            for i,line in enumerate(state):
-                for j, char in enumerate(line):
-                    if char == "b":
-                        score+= bsf((i,j))
+        bsf_score = 0
+        for i,line in enumerate(state):
+            for j, char in enumerate(line):
+                if char == "b":
+                    bsf_score= bsf((i,j))
                 
-
-
-        return score
+        is_cooked = cooked()
+        self.bsf_calls +=1
+        # print(f"{self.bsf_calls}: {type(bsf_score)}")
+        # print)
+        
+        return max(is_cooked,bsf_score)

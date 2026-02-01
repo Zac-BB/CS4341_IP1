@@ -1,7 +1,7 @@
 from utils import memoize, PriorityQueue
 import copy
 
-def astar_search(problem, h=None):
+def astar_search(problem, h=None,report=None):
     """A* search is best-first graph search with f(n) = g(n) + h(n).
     You need to specify the h function when you call astar_search, or
     else in your Problem subclass."""
@@ -12,17 +12,20 @@ def astar_search(problem, h=None):
     #    | | (_) | |_| | |    | |__| (_) | (_| |  __/  |  _  |  __/ | |  __/
     #    |_|\___/ \__,_|_|     \____\___/ \__,_|\___|  |_| |_|\___|_|  \___|
 
+    
     h = memoize(h or problem.h)
     queue = PriorityQueue()
     root_node = Node(problem.initial)
     state = tuple(tuple(row) for row in problem.initial)
     queue.put((0+h(state),root_node))
     visited = set()
+    return_node = None
     while len(queue):
         _,node = queue.pop()
-
+        visited.add(node)
         if problem.is_goal(node.state):
-            return node
+            return_node = node
+            break
         children = node.expand(problem)
         for child in children:
             state = tuple(tuple(row) for row in child.state)
@@ -37,15 +40,13 @@ def astar_search(problem, h=None):
             else:
                 queue.put((f, child))
 
+    if report:
+        report["nodes_expanded"] = len(visited)
+        report["frontier"] = len(queue)
 
+    return return_node
 
-
-
-
-
-    return None
-
-def ucs_search(problem):
+def ucs_search(problem,report):
     """Uniform Cost Search (UCS) is a search algorithm that expands the least
     cost node in the search tree. It is a special case of A* search, so try to
     reuse the astar_search function."""
@@ -58,17 +59,20 @@ def ucs_search(problem):
 
     queue = PriorityQueue()
     root_node = Node(problem.initial)
+    # state = tuple(tuple(row) for row in problem.initial)
     queue.put((0,root_node))
     visited = set()
+    return_node = None
     while len(queue):
         _,node = queue.pop()
-
+        visited.add(node)
         if problem.is_goal(node.state):
-            return node
+            return_node = node
+            break
         children = node.expand(problem)
         for child in children:
             # state = tuple(tuple(row) for row in child.state)
-            f = child.path_cost
+            f = child.path_cost 
 
             if child in visited:
                 continue
@@ -79,8 +83,11 @@ def ucs_search(problem):
             else:
                 queue.put((f, child))
 
+    if report:
+        report["nodes_expanded"] = len(visited)
+        report["frontier"] = len(queue)
 
-    return None
+    return return_node
 
 class Problem:
     """The abstract class for a formal problem. You should subclass
