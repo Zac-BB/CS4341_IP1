@@ -3,7 +3,7 @@ import click
 from sokoban import Sokoban
 from search import astar_search, ucs_search
 from utils import display_solution
-
+    
 # THIS FILE IS FOR SOLVING SOKOBAN PUZZLES
 #   _____                            _              _
 #  |_   _|                          | |            | |
@@ -18,8 +18,8 @@ from utils import display_solution
 # FINISH THE ASSIGNMENT IN `sokoban.py` AND `search.py`
 # YOU MAY MODIFY THIS FILE BUT THE COMMAND LINE INTERFACE MUST REMAIN UNCHANGED
 # REQUIRED PACKAGES: click
-
-
+    
+    
 @click.command()
 @click.option(
     "--input",
@@ -34,23 +34,24 @@ from utils import display_solution
     required=True,
     help="Path to the output file to write the solution.",
 )
-def main(input_file,output_file):
+def main(input_file, output_file):
     board = []
     with open(input_file, "r") as f:
         for l in f:
             if l:
                 board.append(l)
-
+    
     # board is a list of strings containing rows in the input file, you need to parse it into your state representation.
     problem = Sokoban(board)
-
     
-
+    
+    
+    report = {}
     start_time = time.time()
-    result = astar_search(problem)
+    result = astar_search(problem,report)
     # result = ucs_search(problem)
     print("Search completed in {:.2f} seconds.".format(time.time() - start_time))
-
+    
     if not result:
         print("No solution found.")
         soln = []
@@ -68,10 +69,11 @@ def main(input_file,output_file):
         soln = "".join(soln)
         
         print("Solution found with {} moves.".format(len(soln)))
-    print("".join(soln))
+    # print("".join(soln))
     with open(output_file, "w") as f:
         f.write("".join(soln))
-
-
+    
+    
 if __name__ == "__main__":
     main()
+

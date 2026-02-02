@@ -31,6 +31,7 @@ class Sokoban(Problem):
         new_board[i][j] = "p"
         new_board = tuple(tuple(row) for row in new_board)
         return new_board
+    
     def _get_player_pos(_,state: List[str]) -> Tuple:
         """gets the player position """
         for i, line in enumerate(state):
@@ -53,7 +54,7 @@ class Sokoban(Problem):
 
         
 
-    def actions(self, state: List[str]) -> Set[tuple]:
+    def actions(self, state: tuple[tuple[str]]) -> Set[tuple]:
         """Returns the list of valid actions from the current state."""
         player_pos = self._get_player_pos(state)
         possible_actions = [(-1,0),(0,1),(1,0),(0,-1)]
@@ -74,8 +75,6 @@ class Sokoban(Problem):
             
             change_pos = (position[0] + action[0],position[1] + action[1])
             char_at_pos = state[change_pos[0]][change_pos[1]]
-            is_button = char_at_pos == "."
-            on_button = char_at_pos.isupper() 
             fill = fill.upper() if (char_at_pos.isupper() or char_at_pos == ".") else fill.lower()
             state[change_pos[0]][change_pos[1]] = fill
             if char_at_pos in "Bb":

@@ -24,7 +24,7 @@ def closest_tile(rgb):
             best = k
     return best
 
-file_name = "extreme"
+file_name = "hard_2"
 img = Image.open(f"boards/{file_name}.png").convert("RGB")
 w, h = img.size
 
