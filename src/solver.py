@@ -58,7 +58,7 @@ def main(input_file, output_file):
     else:
         # Depending on your Sokoban formulation, you may need to convert your solution format to fulfill the output requirement.
         soln = result.solution()
-        display_solution(problem,soln)
+        # display_solution(problem,soln)
         move_to_str = {
             (-1, 0): "U",
             ( 0, 1): "R",

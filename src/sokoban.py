@@ -119,7 +119,8 @@ class Sokoban(Problem):
             return valid
         def add_vecs(a,b):
             return a[0]+b[0],a[1]+b[1]
-        def cooked():
+        
+        def corner_soft_lock():
             for i,line in enumerate(state):
                 for j, char in enumerate(line):
                     if char == "b":
@@ -133,6 +134,28 @@ class Sokoban(Problem):
                                 sum = add_vecs(sum,delta)
                         if abs(sum[0]) == 1 and abs(sum[1]) == 1:
                             return float('inf')
+            return 0
+        
+        def box_box_soft_lock():
+            for i, line in enumerate(state):
+                for j, char in enumerate(line):
+                    if char != "b":
+                        continue
+
+                    # horizontal pair
+                    if state[i][j+1] == "b":
+                        if state[i-1][j] == "%" and state[i-1][j+1] == "%":
+                            return float("inf")
+                        if state[i+1][j] == "%" and state[i+1][j+1] == "%":
+                            return float("inf")
+
+                    # vertical pair
+                    if state[i+1][j] == "b":
+                        if state[i][j-1] == "%" and state[i+1][j-1] == "%":
+                            return float("inf")
+                        if state[i][j+1] == "%" and state[i+1][j+1] == "%":
+                            return float("inf")
+
             return 0
 
         def bsf(start):
@@ -156,15 +179,17 @@ class Sokoban(Problem):
                         visited.add(child)
             
 
+
         bsf_score = 0
         for i,line in enumerate(state):
             for j, char in enumerate(line):
                 if char == "b":
                     bsf_score= bsf((i,j))
                 
-        is_cooked = cooked()
+        is_corner_soft_lock = corner_soft_lock()
+        is_box_soft_lock = box_box_soft_lock()
         self.bsf_calls +=1
         # print(f"{self.bsf_calls}: {type(bsf_score)}")
         # print)
         
-        return max(is_cooked,bsf_score)
+        return max(is_corner_soft_lock,is_box_soft_lock,bsf_score)

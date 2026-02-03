@@ -3,21 +3,21 @@
         "boards/sokoban_simple.txt": {
             "nodes_expanded": 21,
             "frontier": 3,
-            "time": 0.0012786388397216797,
+            "time": 0.0007271766662597656,
             "output": "URRUULLD",
             "output length": 8
         },
         "boards/sokoban_mid.txt": {
-            "nodes_expanded": 17248,
-            "frontier": 1170,
-            "time": 1.3876056671142578,
-            "output": "DDUURRDDLLRRDDLLULLUURDRDDRRUULLRRUULLDLLDDDRRUULRRRUULLDLDRDDLURUUURRDDDDLLUURLDDRRUUUDLLDLLDRRUUULDRDDLLURURRRDDLLULURRLDDRRUULLDLLDRRRLLUUULD",
+            "nodes_expanded": 14353,
+            "frontier": 1298,
+            "time": 0.9367449283599854,
+            "output": "DDUURRDDLLRRDDLLULLUURDRDDRRUULLRRUULLDLLDDDRRUULRRRUULLDLDRDDLURUUURRDDDDLLUURLDDRRUULLDLLDRRUUULDRDDLLURURRRUDDDLLULURRLDDRRUULLDLLDRRRLULUULD",
             "output length": 144
         },
         "boards/sokoban_hard.txt": {
-            "nodes_expanded": 37581,
-            "frontier": 12835,
-            "time": 3.724177122116089,
+            "nodes_expanded": 35808,
+            "frontier": 12237,
+            "time": 3.5599629878997803,
             "output": "RURRDDDDLDRUUUULLLRDRDRDDLLDLLURLU",
             "output length": 34
         }
@@ -26,21 +26,21 @@
         "boards/sokoban_simple.txt": {
             "nodes_expanded": 40,
             "frontier": 1,
-            "time": 0.00102996826171875,
+            "time": 0.0004837512969970703,
             "output": "URRUULLD",
             "output length": 8
         },
         "boards/sokoban_mid.txt": {
             "nodes_expanded": 44549,
             "frontier": 9,
-            "time": 1.245919942855835,
+            "time": 1.2790796756744385,
             "output": "DDUURRDDLLRRDDLLULLUURDRDDRRUULLRRUULLDLLDDDRRUULRRRUULLDLDRDDLURUUURRDDDDLLUURLDDRRUULLDLLDRRUUULDRDDLLURURRRUDDDLLULURRLDDRRUULLLDLDRRRLUUULLD",
             "output length": 144
         },
         "boards/sokoban_hard.txt": {
             "nodes_expanded": 551922,
             "frontier": 112185,
-            "time": 31.310418128967285,
+            "time": 28.804969787597656,
             "output": "RURRDDDDLDRUUUULLLRDRDRDDLLDLLUUDR",
             "output length": 34
         }
