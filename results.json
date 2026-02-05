@@ -3,21 +3,21 @@
         "boards/sokoban_simple.txt": {
             "nodes_expanded": 21,
             "frontier": 3,
-            "time": 0.0007271766662597656,
+            "time": 0.001539468765258789,
             "output": "URRUULLD",
             "output length": 8
         },
         "boards/sokoban_mid.txt": {
             "nodes_expanded": 14353,
             "frontier": 1298,
-            "time": 0.9367449283599854,
+            "time": 1.7037053108215332,
             "output": "DDUURRDDLLRRDDLLULLUURDRDDRRUULLRRUULLDLLDDDRRUULRRRUULLDLDRDDLURUUURRDDDDLLUURLDDRRUULLDLLDRRUUULDRDDLLURURRRUDDDLLULURRLDDRRUULLDLLDRRRLULUULD",
             "output length": 144
         },
         "boards/sokoban_hard.txt": {
             "nodes_expanded": 35808,
             "frontier": 12237,
-            "time": 3.5599629878997803,
+            "time": 7.2249791622161865,
             "output": "RURRDDDDLDRUUUULLLRDRDRDDLLDLLURLU",
             "output length": 34
         }
@@ -26,21 +26,21 @@
         "boards/sokoban_simple.txt": {
             "nodes_expanded": 40,
             "frontier": 1,
-            "time": 0.0004837512969970703,
+            "time": 0.00104522705078125,
             "output": "URRUULLD",
             "output length": 8
         },
         "boards/sokoban_mid.txt": {
             "nodes_expanded": 44549,
             "frontier": 9,
-            "time": 1.2790796756744385,
+            "time": 2.4732582569122314,
             "output": "DDUURRDDLLRRDDLLULLUURDRDDRRUULLRRUULLDLLDDDRRUULRRRUULLDLDRDDLURUUURRDDDDLLUURLDDRRUULLDLLDRRUUULDRDDLLURURRRUDDDLLULURRLDDRRUULLLDLDRRRLUUULLD",
             "output length": 144
         },
         "boards/sokoban_hard.txt": {
             "nodes_expanded": 551922,
             "frontier": 112185,
-            "time": 28.804969787597656,
+            "time": 58.14620089530945,
             "output": "RURRDDDDLDRUUUULLLRDRDRDDLLDLLUUDR",
             "output length": 34
         }

@@ -186,7 +186,7 @@ class Sokoban(Problem):
                 if char == "b":
                     bsf_score= bsf((i,j))
                 
-        is_corner_soft_lock = corner_soft_lock()
+        is_corner_soft_lock =  corner_soft_lock()
         is_box_soft_lock = box_box_soft_lock()
         self.bsf_calls +=1
         # print(f"{self.bsf_calls}: {type(bsf_score)}")
